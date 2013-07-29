@@ -1,3 +1,4 @@
+#import re, sys
       # Setup user input and output files
   # script, input, output = argv
   #so derty here

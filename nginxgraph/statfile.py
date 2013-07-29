@@ -1,7 +1,5 @@
-import re
 import pygeoip
 import json
-from sys import argv
 
 class StatFile(object):
 	def __init__(self, file_name):
