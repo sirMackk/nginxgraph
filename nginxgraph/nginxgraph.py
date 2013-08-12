@@ -2,18 +2,6 @@ import re
 import pygeoip
 
 class Nginxgraph(object):
-    def __init__(self, file_like_object):
-        self.file = file_like_object
-        try:
-          log = open(self.file, 'rb')
-        except IOError:
-          print "Cannot find input file"
-          exit(1)
-
-        lines = log.readlines()
-        log.close()
-
-        return analyze_log(lines)
 
     def analyze_log(self, lines):
         """
@@ -23,6 +11,7 @@ class Nginxgraph(object):
         data = []
         for val in lines:
             row = []
+
             row += self.get_geo_ip(val)
             row += self.get_time(val)
 
@@ -60,14 +49,14 @@ class Nginxgraph(object):
         return the date and time as it appears in the log
         """
 
-        return re.search(r'\[[a-zA-Z0-9/:]+', line).group()[1:-7]
+        return [re.search(r'\[[a-zA-Z0-9/:]+', line).group()[1:]]
 
     def get_request_type(self, line):
         """
         return the http verb associated with a request
         """
 
-        request_type = re.search(r'"[GETPOSUDHAL]{3, 4}', line)
+        request_type = re.search(r'"[GETPOSUDHAL]{3,4}', line)
         if request_type:
             return [request_type.group()[1:]]
         else:
@@ -80,7 +69,7 @@ class Nginxgraph(object):
 
         request_response = re.search(r'\s{1}[2345][0-9]{2}\s{1}', line)
         if request_response:
-            return request_response.group().strip()
+            return [request_response.group().strip()]
         else:
             return null
 
@@ -89,8 +78,7 @@ class Nginxgraph(object):
         return the reply size in bytes
         """
 
-
-        return re.search(r'\d+', re.search(r'\d{1,5} "', bulk_rest).group()).group()
+        return [re.search(r'\d+', re.search(r'\d{1,5} "', line).group()).group()]
 
     def get_request_path(self, line):
         """
@@ -99,7 +87,7 @@ class Nginxgraph(object):
 
         request_path = re.search(r'\s(\/[a-zA-Z0-9-_\/\!\@\#\$\%\^\*\.]+|\/\s)', line)
         if request_path:
-            return request_path.group().strip()
+            return [request_path.group().strip()]
         else:
             return 'No request path?'
 
@@ -108,10 +96,4 @@ class Nginxgraph(object):
         return the user agent
         """
         
-        return line.split('"')[-2].replace(',', '.')
-
-
-
-
-
-
+        return [line.split('"')[-1].replace(',', '.')]
