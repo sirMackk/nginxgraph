@@ -18,7 +18,6 @@ class StatFile(object):
 		"""
 		Write list to csv file
 		"""
-		print self.file_name
 		f = open('%s.csv' % self.file_name, 'wb')
 		for i in items:
 			f.write((','.join([unicode(j) for j in i]) + '\n').encode('utf-8'))
@@ -45,7 +44,7 @@ class StatFile(object):
 		self.make_json([dict(zip(self.log_key, i)) for i in self.master_list])
 
 
-	def popular(self, items, column_number):
+	def popular(self, column_number):
 		"""
 		Return a dictionary representing popular items
 		ie. item:count
@@ -64,7 +63,7 @@ class StatFile(object):
 		Count and write the most popular items from master_list
 		into a csv file
 		"""
-		self.make_csv([i for i in self.popular(self.master_list, column_number).iteritems()])
+		self.make_csv([i for i in self.popular(column_number).iteritems()])
 
 	def json_popular_column(self, column_number):
 		"""
@@ -72,4 +71,4 @@ class StatFile(object):
 		into a json .js file
 		"""
 		self.make_json([{"key": key, "value": value} for key, value 
-					in self.popular(self.master_list, column_number).iteritems()])
+					in self.popular(column_number).iteritems()])

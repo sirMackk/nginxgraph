@@ -21,7 +21,7 @@ class Nginxgraph(object):
             row += self.get_reply_size(remainder)
 
             row += self.get_request_path(remainder)
-            row += self.get_user_agent(i)
+            row += self.get_user_agent(val)
           
             data.append(row)
 
@@ -96,4 +96,4 @@ class Nginxgraph(object):
         return the user agent
         """
         
-        return [line.split('"')[-1].replace(',', '.')]
+        return [line.split('"')[-2].replace(',', '.')]
