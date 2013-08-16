@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+    <script src="country.js"></script>
+    <script src="d3.js"></script>
+</head>
+<body>
+    <h1>Visitors per country:</h1>
+    <div id="donut-graph"></div>
+    <script>
+    var width = 960,
+        height = 500,
+        radius = Math.min(width, height) / 2;
+
+    var color = d3.scale.ordinal()
+         .range(['#A7C6D8', '#68B4D8', '#095E41', '#DA9F37', '#E3B15C',
+                 '#54536F', '#7187B1', '#8CA1BD', '#DDD0C5']);
+
+    var arc = d3.svg.arc()
+        .outerRadius(radius - 10)
+        .innerRadius(radius - 70);
+
+    var pie = d3.layout.pie()
+        .sort(null)
+        .value(function(d) { return d.value; });
+
+    var svg = d3.select("#donut-graph").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+      .append("g")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+    var g = svg.selectAll(".arc")
+        .data(pie(data))
+        .enter().append("g")
+        .attr("class", "arc");
+
+    g.append("path")
+        .attr("d", arc)
+        .style("fill", function(d) { return color(d.data.key) });
+
+    g.append("text")
+        .attr("transform", function(d) { return "translate(" + arc.centroid(d)  + ")" })
+        .attr("dy", "0.35em")
+        .style("text-anchor", "middle")
+        .text(function(d) { return d.data.key; })
+    </script>
+
+
+</body>
+</html>

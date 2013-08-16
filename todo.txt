@@ -1,6 +1,4 @@
-- Add more tests to statfile_tests
-- Make tests for parser
-- Rework parser prototype into a nice class
-- Use optparse
-- Think up a comfortable output for html/js
+- Add appropriate var in js file
+- think about animations/different data types in html output
+- format graphs/pick right graphs
 
